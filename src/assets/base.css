@@ -1,0 +1,11 @@
+:root {
+  --bg-color: #222222;
+  --color: #ffffea;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--color);
+  font-family: 'Courier New', Courier, monospace;
+  margin: 4vw;
+}
