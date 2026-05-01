@@ -46,7 +46,7 @@ function logOutEmail() {
 }
 function logOut() {
   logOutEmail()
-  logOutEmail()
+  logOutGoogle()
   logOutGithub()
   currentComponent.value = LoginView
 }
