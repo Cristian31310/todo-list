@@ -3,48 +3,26 @@ import { ref } from 'vue'
 import TaskCounter from './TaskCounter.vue'
 import Tasks from './Tasks.vue'
 import { useCollection } from 'vuefire'
-import { collection, getFirestore } from 'firebase/firestore'
+import { collection, getFirestore, addDoc } from 'firebase/firestore'
 
 const db = getFirestore()
 const text = ref()
 
 var tasks = useCollection(collection(db, 'tareas'))
-console.log(tasks)
-// const tasks = ref([
-//   {
-//     name: 'hela',
-//     check: false,
-//     creation: 0,
-//     priority: {
-//       low: false,
-//       normal: false,
-//       high: false,
-//     },
-//   },
-//   {
-//     name: 'imprimete',
-//     check: true,
-//     creation: 0,
-//     priority: {
-//       low: false,
-//       normal: false,
-//       high: false,
-//     },
-//   },
-// ])
-// const tasks = ref([])
-// function getInputText() {
-//   tasks.value.push({
-//     name: text.value,
-//     check: false,
-//     creation: 0,
-//     priority: {
-//       low: false,
-//       normal: false,
-//       high: false,
-//     },
-//   })
-// }
+
+async function addTask() {
+  console.log('tarea añadida')
+  await addDoc(collection(db, 'tareas'), {
+    name: text.value,
+    check: false,
+    creation: 0,
+    priority: {
+      low: false,
+      normal: false,
+      high: false,
+    },
+  })
+}
 </script>
 
 <template>
@@ -54,7 +32,7 @@ console.log(tasks)
     </header>
     <div>
       <input
-        @keyup.enter="getInputText"
+        @keyup.enter="addTask"
         v-model="text"
         type="text"
         placeholder="¿Que quieres recordar?"

@@ -2,7 +2,10 @@
 import { ref } from 'vue'
 import PriorityButtom from './PriorityButtom.vue'
 
-const emit = defineEmits(['deleteTask'])
+import { getFirestore, deleteDoc, doc } from 'firebase/firestore'
+
+const db = getFirestore()
+
 const taskInfo = defineProps(['info'])
 
 const isNotDelete = ref(true)
@@ -16,8 +19,14 @@ const checkCircleColor = ref('white')
 const textStyleNone = ref('none')
 const textLineThrough = ref('line-through')
 const textStyle = ref(textStyleNone.value)
+
+const low = ref(task.value.priority.low)
+const normal = ref(task.value.priority.normal)
+const high = ref(task.value.priority.high)
 console.log(taskInfo)
+
 function toggleCheck() {
+  console.log(task.value.name)
   if (isCheck.value) {
     isCheck.value = false
     checkCircleColor.value = white.value
@@ -29,10 +38,8 @@ function toggleCheck() {
   }
 }
 
-function deleteTask() {
-  isNotDelete.value = false
-  //ver como optener la posicion del array y usarlor como id
-  emit('deleteTask', { id: 0 })
+async function deleteTask() {
+  await deleteDoc(doc(db, 'tareas', task.value.id))
 }
 toggleCheck()
 </script>
@@ -70,9 +77,9 @@ toggleCheck()
       </div>
       <div class="taskPriority">
         <p>Prioridad:</p>
-        <PriorityButtom name="ˇ Low" color="#3293d4" :check="task.priority.low" />
-        <PriorityButtom name=" Normal" color="#375a7f" :check="task.priority.normal" />
-        <PriorityButtom name="ˆ High" color="#e74c3c" :check="task.priority.high" />
+        <PriorityButtom name="ˇ Low" color="#3293d4" :check="low.value" />
+        <PriorityButtom name=" Normal" color="#375a7f" :check="normal.value" />
+        <PriorityButtom name="ˆ High" color="#e74c3c" :check="high.value" />
         <p>Añadido hace {{ task.creation }} minutos</p>
       </div>
     </div>
@@ -91,7 +98,6 @@ toggleCheck()
   border: solid 2px #3c3b3b;
   border-radius: 0px;
   padding: 1em;
-  padding-botom: 0.9em;
   padding-left: 2em;
   padding-right: 2em;
 }

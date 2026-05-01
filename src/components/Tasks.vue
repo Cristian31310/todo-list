@@ -2,15 +2,11 @@
 import { ref } from 'vue'
 import Task from './Task.vue'
 const prop = defineProps(['tasks'])
-console.log(prop.tasks)
-function printId(i) {
-  console.log(i)
-}
 </script>
 
 <template>
   <div v-for="task in tasks">
-    <Task @deleteTask="printId" :info="{ task }" />
+    <Task :info="{ task }" />
   </div>
 </template>
 
