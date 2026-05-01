@@ -1,25 +1,39 @@
 <script setup>
 //añadir icono
-import {ref} from 'vue'
-import Task from './Task.vue'
-const totalTask = ref(4);
-const restTask = ref(2);
+import { ref } from 'vue'
+import { useCollection } from 'vuefire'
+import { collection, getFirestore } from 'firebase/firestore'
+
+const db = getFirestore()
+var tasks = useCollection(collection(db, 'tareas'))
+console.log('tareas counter', tasks)
+
+const restTask = ref(2)
+function restTasks() {
+  // const checkedTask = ref(tasks.filter((task) => task.checkd == true))
+  const checkedTask = tasks.length
+  console.log('check', checkedTask)
+  return checkedTask
+  // restTask.value = checkedTask.length
+}
+
+restTasks()
 </script>
 
 <template>
   <div>
-    <p>{{restTask}} pendientes de un total de {{totalTask}} | </p>
-    <p class= "erase"> x Borrar tareas completadas</p>
+    <p>{{ restTasks() }} pendientes de un total de {{ tasks.length }} |</p>
+    <p class="erase">x Borrar tareas completadas</p>
   </div>
 </template>
 
 <style scoped>
-  div{
-    display:flex;
-    flex-direction: row;
-  }
+div {
+  display: flex;
+  flex-direction: row;
+}
 
-  .erase{
-    color: #EB8E19;
-  }
+.erase {
+  color: #eb8e19;
+}
 </style>

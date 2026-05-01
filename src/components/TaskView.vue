@@ -11,7 +11,6 @@ const text = ref()
 var tasks = useCollection(collection(db, 'tareas'))
 
 async function addTask() {
-  console.log('tarea añadida')
   await addDoc(collection(db, 'tareas'), {
     name: text.value,
     check: false,
@@ -41,7 +40,7 @@ async function addTask() {
     <hr />
     <TaskCounter />
     <hr />
-    <Tasks :tasks="tasks" />
+    <Tasks />
     <footer>
       <p>Desarrolado por Cristian Martín</p>
       <p>Código disponible (enlace github)</p>

@@ -5,6 +5,7 @@ import App from './App.vue'
 
 import { initializeApp } from 'firebase/app'
 import { VueFire, VueFireAuth } from 'vuefire'
+import { getAuth } from 'firebase/auth'
 // the file we created above with `database`, `firestore` and other exports
 
 const firebaseConfig = {

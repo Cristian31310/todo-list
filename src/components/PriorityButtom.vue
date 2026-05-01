@@ -3,10 +3,9 @@ import { ref } from 'vue'
 const priority = defineProps(['name', 'color', 'check'])
 const baseColor = ref('#444343')
 const bgColor = ref(baseColor.value)
-
 const isClicked = ref(!priority.check)
 function toggleCheck() {
-  console.log('urcerucor')
+  console.log('normal', priority.check)
   if (isClicked.value) {
     isClicked.value = false
     bgColor.value = baseColor.value

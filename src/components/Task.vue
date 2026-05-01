@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import PriorityButtom from './PriorityButtom.vue'
 
-import { getFirestore, deleteDoc, doc } from 'firebase/firestore'
+import { updateDoc, getFirestore, deleteDoc, doc } from 'firebase/firestore'
 
 const db = getFirestore()
 
@@ -23,15 +23,21 @@ const textStyle = ref(textStyleNone.value)
 const low = ref(task.value.priority.low)
 const normal = ref(task.value.priority.normal)
 const high = ref(task.value.priority.high)
-console.log(taskInfo)
-
-function toggleCheck() {
+// console.log('prioridad baja', task.value.priority.low)
+console.log('prioridad baja', low.value)
+async function toggleCheck() {
   console.log(task.value.name)
   if (isCheck.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      check: false,
+    })
     isCheck.value = false
     checkCircleColor.value = white.value
     textStyle.value = textStyleNone.value
   } else if (!isCheck.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      check: true,
+    })
     isCheck.value = true
     checkCircleColor.value = green.value
     textStyle.value = textLineThrough.value
@@ -39,7 +45,53 @@ function toggleCheck() {
 }
 
 async function deleteTask() {
-  await deleteDoc(doc(db, 'tareas', task.value.id))
+  deleteDoc(doc(db, 'tareas', task.value.id))
+}
+
+async function updateLow() {
+  if (low.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        low: false,
+      },
+    })
+  } else if (!low.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        low: true,
+      },
+    })
+  }
+}
+async function updateNormal() {
+  if (normal.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        normal: false,
+      },
+    })
+  } else if (!normal.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        normal: true,
+      },
+    })
+  }
+}
+async function updateHigh() {
+  if (high.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        high: false,
+      },
+    })
+  } else if (!high.value) {
+    await updateDoc(doc(db, 'tareas', task.value.id), {
+      priority: {
+        high: true,
+      },
+    })
+  }
 }
 toggleCheck()
 </script>
@@ -77,9 +129,9 @@ toggleCheck()
       </div>
       <div class="taskPriority">
         <p>Prioridad:</p>
-        <PriorityButtom name="ˇ Low" color="#3293d4" :check="low.value" />
-        <PriorityButtom name=" Normal" color="#375a7f" :check="normal.value" />
-        <PriorityButtom name="ˆ High" color="#e74c3c" :check="high.value" />
+        <PriorityButtom @click="updateLow" name="ˇ Low" color="#3293d4" :check="low" />
+        <PriorityButtom @click="updateNormal" name=" Normal" color="#375a7f" :check="normal" />
+        <PriorityButtom @click="updateHigh" name="ˆ High" color="#e74c3c" :check="high" />
         <p>Añadido hace {{ task.creation }} minutos</p>
       </div>
     </div>
