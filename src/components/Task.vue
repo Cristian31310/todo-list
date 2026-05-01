@@ -23,10 +23,8 @@ const textStyle = ref(textStyleNone.value)
 const low = ref(task.value.priority.low)
 const normal = ref(task.value.priority.normal)
 const high = ref(task.value.priority.high)
-// console.log('prioridad baja', task.value.priority.low)
-console.log('prioridad baja', low.value)
+
 async function toggleCheck() {
-  console.log(task.value.name)
   if (isCheck.value) {
     await updateDoc(doc(db, 'tareas', task.value.id), {
       check: false,
